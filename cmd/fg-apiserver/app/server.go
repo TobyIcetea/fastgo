@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/TobyIcetea/fastgo/cmd/fg-apiserver/app/options"
+	"github.com/TobyIcetea/fastgo/pkg/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -36,11 +37,17 @@ func NewFastGOCommand() *cobra.Command {
 	// 推荐使用配置文件来配置应用，便于管理配置项
 	cmd.PersistentFlags().StringVarP(&configFile, "config", "c", filePath(), "Path to the fg-apiserver configuration file.")
 
+	// 添加 --version 标志
+	version.AddFlags(cmd.PersistentFlags())
+
 	return cmd
 }
 
 // run 是主运行逻辑，规则初始化日志、解析配置、校验选项并启动服务器
 func run(opts *options.ServerOptions) error {
+	// 如果传入 --version，则打印版本信息并退出
+	version.PrintAndExitIfRequested()
+
 	// 将 Viper 中的配置解析到 opts
 	if err := viper.Unmarshal(opts); err != nil {
 		return err
