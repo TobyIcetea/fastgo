@@ -4,41 +4,19 @@ import (
 	"fmt"
 	"net"
 	"strconv"
-	"time"
+
+	"github.com/TobyIcetea/fastgo/internal/apiserver"
+	genericoptions "github.com/TobyIcetea/fastgo/pkg/options"
 )
 
-// MYSQLOptions defines options for mysql database.
-type MYSQLOptions struct {
-	Addr                   string        `json:"addr,omitempty" mapstructure:"addr" `
-	Username               string        `json:"username,omitempty" mapstructure:"username"`
-	Password               string        `json:"-" mapstructure:"password"`
-	Database               string        `json:"database" mapstructure:"database"`
-	MaxIdleConnections     int           `json:"max-idle-connections,omitempty" mapstructure:"max-idle-connections,omitempty"`
-	MaxOpenConnections     int           `json:"max-open-connections,omitempty" mapstructure:"max-open-connections"`
-	MaxConnectionsLifeTime time.Duration `json:"max-connection-left-time,omitempty" mapstructure:"max-connection-left-time"`
-}
-
-// NewMySQLOptions crteate a `zero` value instantce.
-func NewMySQLOptions() *MYSQLOptions {
-	return &MYSQLOptions{
-		Addr:                   "127.0.0.1:3306",
-		Username:               "onex",
-		Password:               "onex(#)666",
-		Database:               "onex",
-		MaxIdleConnections:     100,
-		MaxOpenConnections:     100,
-		MaxConnectionsLifeTime: time.Duration(10) * time.Second,
-	}
-}
-
 type ServerOptions struct {
-	MYSQLOptions *MYSQLOptions `json:"mysql" mapstructure:"mysql"`
+	MYSQLOptions *genericoptions.MySQLOptions `json:"mysql" mapstructure:"mysql"`
 }
 
 // NewServerOptions 创建带有默认值的 ServerOptions 实例
 func NewServerOptions() *ServerOptions {
 	return &ServerOptions{
-		MYSQLOptions: NewMySQLOptions(),
+		MYSQLOptions: genericoptions.NewMySQLOptions(),
 	}
 }
 
@@ -93,9 +71,16 @@ func (o *ServerOptions) Validate() error {
 		return fmt.Errorf("MySQL max idle connections cannot be greater than max open connections")
 	}
 
-	if o.MYSQLOptions.MaxConnectionsLifeTime <= 0 {
+	if o.MYSQLOptions.MaxConnectionLifeTime <= 0 {
 		return fmt.Errorf("MySQL max connection lifetime must be greater than 0")
 	}
 
 	return nil
+}
+
+// Config 基于 ServerOptions 构建 apiserver.Config
+func (o *ServerOptions) Config() (*apiserver.Config, error) {
+	return &apiserver.Config{
+		MySQLOptions: o.MYSQLOptions,
+	}, nil
 }
