@@ -1,0 +1,9 @@
+mysql:
+  addr: 127.0.0.1:3306
+  username: fastgo
+  password: fastgo1234
+  database: fastgo
+  max-idle-connections: 100
+  max-open-connections: 100
+  maX-connection-life-time: 10s
+
