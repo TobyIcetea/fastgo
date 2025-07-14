@@ -5,5 +5,9 @@ mysql:
   database: fastgo
   max-idle-connections: 100
   max-open-connections: 100
-  maX-connection-life-time: 10s
+  max-connection-life-time: 10s
 
+log:
+  format: text
+  level: info
+  output: stdout

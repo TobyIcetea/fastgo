@@ -1,7 +1,7 @@
 package apiserver
 
 import (
-	"fmt"
+	"log/slog"
 
 	genericoptions "github.com/TobyIcetea/fastgo/pkg/options"
 )
@@ -24,7 +24,8 @@ func (cfg *Config) NewServer() (*Server, error) {
 
 // Run 运行应用
 func (s *Server) Run() error {
-	fmt.Printf("Read MySQL host from config: %s\n", s.cfg.MySQLOptions.Addr)
+	// 将输出改成调用 slog 输出
+	slog.Info("Read MySQL host from config", "mysql.addr", s.cfg.MySQLOptions.Addr)
 
 	select {} // 调用 select 语句，阻塞防止进程退出
 }

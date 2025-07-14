@@ -12,8 +12,8 @@ type versionValue int
 
 const (
 	// 未设置版本.
-	VersionNetSet versionValue = 0
-	// 启用脚本
+	VersionNotSet versionValue = 0
+	// 启用版本
 	VersionEnabled versionValue = 1
 	// 原始版本
 	VersionRaw versionValue = 2
@@ -38,11 +38,15 @@ func (v *versionValue) Set(s string) error {
 	if boolVal {
 		*v = VersionEnabled
 	} else {
-		*v = VersionNetSet
+		*v = VersionNotSet
 	}
 	return err
 }
 
+// 这个函数的返回值有三种
+// 1. VersionNotSet 时，返回 "false"
+// 2. VersionEnabled 时，返回 "true"
+// 3. VersionRaw 时，返回 "raw"
 func (v *versionValue) String() string {
 	if *v == VersionRaw {
 		return strRawVersion
@@ -70,7 +74,7 @@ func Version(name string, value versionValue, usage string) *versionValue {
 
 const versionFlagName = "version"
 
-var versionFlag = Version(versionFlagName, VersionNetSet, "Print version information and quit")
+var versionFlag = Version(versionFlagName, VersionNotSet, "Print version information and quit")
 
 // AddFlags registers this package's flags on arbitrary FlagSets, such that they point to the
 // same value as the global flags.
@@ -82,10 +86,11 @@ func AddFlags(fs *flag.FlagSet) {
 // and, if so, print the version and exit.
 func PrintAndExitIfRequested() {
 	// 检查版本标志的值并打印相应的信息
-	if *versionFlag == VersionRaw {
+	switch *versionFlag {
+	case VersionRaw:
 		fmt.Printf("%s\n", Get().Text())
 		os.Exit(0)
-	} else if *versionFlag == VersionEnabled {
+	case VersionEnabled:
 		fmt.Printf("%s\n", Get().String())
 		os.Exit(0)
 	}
