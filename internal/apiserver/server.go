@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/TobyIcetea/fastgo/internal/pkg/core"
+	"github.com/TobyIcetea/fastgo/internal/pkg/errorsx"
 	mw "github.com/TobyIcetea/fastgo/internal/pkg/middleware"
 	genericoptions "github.com/TobyIcetea/fastgo/pkg/options"
 	"github.com/gin-gonic/gin"
@@ -35,12 +37,12 @@ func (cfg *Config) NewServer() (*Server, error) {
 
 	// 注册 404 Handler
 	engine.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{"code": "PageNotFound", "message": "Page not found."})
+		core.WriteResponse(c, errorsx.ErrNotFound.WithMessage("Page not found"), nil)
 	})
 
 	// 注册 /healthz handler.
 	engine.GET("/healthz", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		core.WriteResponse(c, nil, map[string]string{"Status": "ok"})
 	})
 
 	// gin.Recovery() 中间件，用来捕获任何 panic，并恢复
