@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	mw "github.com/TobyIcetea/fastgo/internal/pkg/middleware"
 	genericoptions "github.com/TobyIcetea/fastgo/pkg/options"
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +37,10 @@ func (cfg *Config) NewServer() (*Server, error) {
 	engine.GET("/healthz", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
+
+	// gin.Recovery() 中间件，用来捕获任何 panic，并恢复
+	mws := []gin.HandlerFunc{gin.Recovery(), mw.NoCache, mw.Cors, mw.RequestID()}
+	engine.Use(mws...)
 
 	// 创建 HTTP Server 实例
 	httpsrv := &http.Server{Addr: cfg.Addr, Handler: engine}
