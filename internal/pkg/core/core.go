@@ -18,7 +18,7 @@ type ErrorResponse struct {
 
 // WriteResponse 是通用的响应函数
 // 它会根据是否发生错误，生成成功响应或标准化的错误响应
-func WriteResponse(c *gin.Context, err error, data any) {
+func WriteResponse(c *gin.Context, data any, err error) {
 	if err != nil {
 		// 如果发生错误，生成错误响应
 		errx := errorsx.FromError(err) // 提取错误详细信息

@@ -7,7 +7,8 @@ import (
 
 	"github.com/TobyIcetea/fastgo/internal/apiserver/model"
 	"github.com/TobyIcetea/fastgo/internal/pkg/errorsx"
-	"github.com/TobyIcetea/fastgo/pkg/store/where"
+	"github.com/onexstack/onexstack/pkg/store/where"
+
 	"gorm.io/gorm"
 )
 

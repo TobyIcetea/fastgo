@@ -1,5 +1,9 @@
 package rid
 
+import (
+	"github.com/onexstack/onexstack/pkg/id"
+)
+
 const defaultABC = "abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 type ResourceID string
@@ -22,7 +26,7 @@ func (rid ResourceID) New(counter uint64) string {
 	uniqueStr := id.NewCode(
 		counter,
 		id.WithCodeChars([]rune(defaultABC)),
-		id.WithCodeLen(6),
+		id.WithCodeL(6),
 		id.WithCodeSalt(Salt()),
 	)
 	return rid.String() + "-" + uniqueStr

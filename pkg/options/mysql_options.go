@@ -98,7 +98,7 @@ func (o *MySQLOptions) DSN() string {
 		o.Addr,
 		o.Database,
 		true,
-		"local",
+		"Local",
 	)
 }
 

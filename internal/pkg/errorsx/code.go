@@ -18,4 +18,16 @@ var (
 
 	// ErrDBWrite 表示数据库写入失败
 	ErrDBWrite = &ErrorX{Code: http.StatusInternalServerError, Reason: "InternalError.DBWrite", Message: "Database write failure."}
+
+	// ErrBind 表示请求体绑定错误
+	ErrBind = &ErrorX{Code: http.StatusBadRequest, Reason: "BindError", Message: "Error occurred while binding the request body to the struct."}
+
+	// ErrValidArgument 表示参数验证失败
+	ErrInvalidArgument = &ErrorX{Code: http.StatusBadRequest, Reason: "InvalidArgument", Message: "Argument verification failed"}
+
+	// ErrSignToken 表示签发 JWT Token 时出错.
+	ErrSignToken = &ErrorX{Code: http.StatusUnauthorized, Reason: "Unauthenticated.SignToken", Message: "Error occurred while signing the JSON web token."}
+
+	// ErrTokenInvalid 表示 JWT Token 格式无效.
+	ErrTokenInvalid = &ErrorX{Code: http.StatusUnauthorized, Reason: "Unauthenticated.TokenInvalid", Message: "Token was invalid."}
 )

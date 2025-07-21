@@ -1,6 +1,10 @@
 package biz
 
-import "github.com/TobyIcetea/fastgo/internal/apiserver/store"
+import (
+	postv1 "github.com/TobyIcetea/fastgo/internal/apiserver/biz/v1/post"
+	userv1 "github.com/TobyIcetea/fastgo/internal/apiserver/biz/v1/user"
+	"github.com/TobyIcetea/fastgo/internal/apiserver/store"
+)
 
 // IBiz 定义了业务层需要实现的方法
 type IBiz interface {

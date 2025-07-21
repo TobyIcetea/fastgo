@@ -7,6 +7,7 @@ import (
 	"github.com/TobyIcetea/fastgo/internal/apiserver/pkg/conversion"
 	"github.com/TobyIcetea/fastgo/internal/apiserver/store"
 	"github.com/TobyIcetea/fastgo/internal/pkg/contextx"
+	apiv1 "github.com/TobyIcetea/fastgo/pkg/api/apiserver/v1"
 	"github.com/jinzhu/copier"
 	"github.com/onexstack/onexstack/pkg/store/where"
 )
@@ -39,7 +40,7 @@ func New(store store.IStore) *postBiz {
 }
 
 // Create 实现 PostBiz 接口中的 Create 方法
-func (b *postBiz) Create(ctx context.Context, rq *apiv1.CreatePostRequest) (*apiv1.CreatePostRequest, error) {
+func (b *postBiz) Create(ctx context.Context, rq *apiv1.CreatePostRequest) (*apiv1.CreatePostResponse, error) {
 	var postM model.Post
 	_ = copier.Copy(&postM, rq)
 	postM.UserID = contextx.UserID(ctx)
